@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<implementation>
+<functions>   
+	function tado_init_ac(lul_device)
+		luup.log("TadoAC: Init Start")
+       
+        luup.log("TadoAC: Init Finish")
+	end
+
+</functions>
+<startup>tado_init_ac</startup>
+<actionList>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetName</name>
+		<run>
+			return luup.variable_get(HOME_SID, "name", lul_device)
+		</run>
+	</action>
+    <action>
+        <serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+        <name>GetTimezone</name>
+        <run>
+            return luup.variable_get(HOME_SID, "timezone", lul_device)
+        </run>
+    </action>
+    <action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetOutsideTemperatureC</name>
+		<run>
+			return luup.variable_get(HOME_SID, "outsideTemperaturecelsius", lul_device)
+		</run>
+	</action>
+    <action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetOutsideTemperatureF</name>
+		<run>
+			return luup.variable_get(HOME_SID, "outsideTemperaturefahrenheit", lul_device)
+		</run>
+	</action>
+    <action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetWeatherState</name>
+		<run>
+			return luup.variable_get(HOME_SID, "weatherStatevalue", lul_device)
+		</run>
+	</action>
+        <action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetSolarIntensity</name>
+		<run>
+			return luup.variable_get(HOME_SID, "solarIntensitypercentage", lul_device)
+		</run>
+	</action>
+</actionList>
+</implementation>
+

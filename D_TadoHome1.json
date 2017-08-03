@@ -1,0 +1,294 @@
+{
+	"default_icon": "TadoLogo2.png",
+	"state_icons": "",
+	"inScene": "0",
+	"doc_url": {
+		"doc_forced_url": {
+			"text": ""
+		}
+	},
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Settings"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "0.5",
+                    "left": "0",
+                    "x": "2",
+                    "y": "3"
+                }
+            ],
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "type": "info",
+                    "scenegroup": "1"
+                },
+                {
+                    "id": "2",
+                    "type": "info",
+                    "scenegroup": "1"
+                }
+            ],
+            "Control": [
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Name"
+                    },
+                    "Display": {
+                        "Top": 20,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "name",
+                        "Top": 20,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Timezone"
+                    },
+                    "Display": {
+                        "Top": 70,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "timezone",
+                        "Top": 70,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "outsideTemperaturecelsius"
+                    },
+                    "Display": {
+                        "Top": 120,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "outsideTemperaturecelsius",
+                        "Top": 120,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "outsideTemperaturefahrenheit"
+                    },
+                    "Display": {
+                        "Top": 170,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "outsideTemperaturefahrenheit",
+                        "Top": 170,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "weatherStatevalue"
+                    },
+                    "Display": {
+                        "Top": 220,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "weatherStatevalue",
+                        "Top": 220,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "solarIntensitypercentage"
+                    },
+                    "Display": {
+                        "Top": 270,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "solarIntensitypercentage",
+                        "Top": 270,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Timezone"
+                    },
+                    "Display": {
+                        "Top": 320,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "timezone",
+                        "Top": 320,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Timezone"
+                    },
+                    "Display": {
+                        "Top": 370,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "timezone",
+                        "Top": 370,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Timezone"
+                    },
+                    "Display": {
+                        "Top": 420,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "timezone",
+                        "Top": 420,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Timezone"
+                    },
+                    "Display": {
+                        "Top": 470,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoHome1",
+                        "Variable": "timezone",
+                        "Top": 470,
+                        "Left": 280,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                }
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        }
+    ],
+    "device_type": "urn:schemas-fr87-com:device:TadoHome:1"
+}

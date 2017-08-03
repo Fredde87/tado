@@ -1,0 +1,209 @@
+{
+	"default_icon": "TadoLogo.png",
+	"state_icons": "",
+	"inScene": "0",
+	"doc_url": {
+		"doc_forced_url": {
+			"text": ""
+		}
+	},
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Settings"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "0.5",
+                    "left": "0",
+                    "x": "2",
+                    "y": "3"
+                }
+            ],
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "type": "info",
+                    "scenegroup": "1"
+                },
+                {
+                    "id": "2",
+                    "type": "info",
+                    "scenegroup": "1"
+                }
+            ],
+            "Control": [
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Username6"
+                    },
+                    "Display": {
+                        "Top": 20,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:Tado1",
+                        "Variable": "username",
+                        "Top": 20,
+                        "Left": 180,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": 101,
+                    "Display": {
+                        "Top": 36,
+                        "Left": 50,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 36,
+                        "Left": 180,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:Tado1",
+                        "Action": "SetUsername",
+                        "Parameters": [
+                            {
+                                "Name": "username",
+                                "ID": 101
+                            }
+                        ]
+                    }
+                },
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Password"
+                    },
+                    "Display": {
+                        "Top": 68,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:Tado1",
+                        "Variable": "password",
+                        "Top": 68,
+                        "Left": 180,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": 102,
+                    "Display": {
+                        "Top": 84,
+                        "Left": 50,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 84,
+                        "Left": 180,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:Tado1",
+                        "Action": "SetPassword",
+                        "Parameters": [
+                            {
+                                "Name": "password",
+                                "ID": 102
+                            }
+                        ]
+                    }
+                },
+                                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Homes"
+                    },
+                    "Display": {
+                        "Top": 116,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:Tado1",
+                        "Variable": "homes",
+                        "Top": 116,
+                        "Left": 180,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Apply (Reload Lua)"
+                    },
+                    "Display": {
+                        "Top": 148,
+                        "Left": 180,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:micasaverde-com:serviceId:HomeAutomationGateway1",
+                        "Action": "Reload"
+                    }
+                }
+            ]
+        },
+        {
+            "Label": {
+                "lang_tag": "advanced",
+                "text": "Advanced"
+            },
+            "Position": "1",
+            "TabType": "javascript",
+            "ScriptName": "shared.js",
+            "Function": "advanced_device"
+        }
+    ],
+    "device_type": "urn:schemas-fr87-com:device:Tado:1"
+}

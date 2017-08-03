@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-fr87-com:device:TadoHome:1</deviceType>
+    <friendlyName>Tado Home</friendlyName>
+    <manufacturer>Tado</manufacturer>
+    <manufacturerURL>http://www.tado.com</manufacturerURL>
+    <modelDescription>Home registered under users tado.com account</modelDescription>
+    <modelName>All Tado thermostats and AC controllers</modelName>
+    <modelNumber>1.0</modelNumber>
+    <handleChildren>0</handleChildren>
+    <staticJson>D_TadoHome1.json</staticJson>
+   <serviceList>
+      <service>
+        <serviceType>urn:schemas-fr87-com:service:TadoHome:1</serviceType>
+        <serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+        <SCPDURL>S_TadoHome1.xml</SCPDURL>
+      </service>
+   </serviceList>
+    <implementationList>
+      <implementationFile>I_TadoHome1.xml</implementationFile>
+    </implementationList>
+  </device>
+</root>
