@@ -5,6 +5,20 @@
 <actionList>
 	<action>
 		<serviceId>urn:fr87-com:serviceId:Tado1</serviceId>
+		<name>SetDebug</name>
+		<run>
+			luup.variable_set(CONN_SID, "debug", lul_settings.debug or "", lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:Tado1</serviceId>
+		<name>GetDebug</name>
+		<run>
+			return luup.variable_get(CONN_SID, "debug", lul_device)
+		</run>
+	</action>
+    <action>
+		<serviceId>urn:fr87-com:serviceId:Tado1</serviceId>
 		<name>SetUsername</name>
 		<run>
 			luup.variable_set(CONN_SID, "username", lul_settings.username or "", lul_device)

@@ -41,7 +41,7 @@
                     "ControlType": "label",
                     "Label": {
                         "lang_tag": "device_settings_page",
-                        "text": "Username6"
+                        "text": "Username"
                     },
                     "Display": {
                         "Top": 20,
@@ -151,11 +151,11 @@
                         ]
                     }
                 },
-                                {
+                {
                     "ControlType": "label",
                     "Label": {
                         "lang_tag": "device_settings_page",
-                        "text": "Homes"
+                        "text": "Debug"
                     },
                     "Display": {
                         "Top": 116,
@@ -168,11 +168,44 @@
                     "ControlType": "variable",
                     "Display": {
                         "Service": "urn:fr87-com:serviceId:Tado1",
-                        "Variable": "homes",
+                        "Variable": "debug",
                         "Top": 116,
                         "Left": 180,
                         "Width": 100,
                         "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": 103,
+                    "Display": {
+                        "Top": 132,
+                        "Left": 50,
+                        "Width": 100,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 132,
+                        "Left": 180,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:Tado1",
+                        "Action": "SetDebug",
+                        "Parameters": [
+                            {
+                                "Name": "debug",
+                                "ID": 103
+                            }
+                        ]
                     }
                 },
                 {
@@ -182,7 +215,7 @@
                         "text": "Apply (Reload Lua)"
                     },
                     "Display": {
-                        "Top": 148,
+                        "Top": 180,
                         "Left": 180,
                         "Width": 50,
                         "Height": 20

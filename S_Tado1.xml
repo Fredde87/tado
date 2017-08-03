@@ -6,6 +6,24 @@
   </specVersion>
   <actionList>
     <action>
+      <name>SetDebug</name>
+      <argumentList>
+        <argument>
+          <name>debug</name>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetDebug</name>
+      <argumentList>
+        <argument>
+          <name>debug</name>
+          <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
       <name>SetUsername</name>
       <argumentList>
         <argument>
