@@ -38,6 +38,7 @@ Also the latest iOS app as off 02/08/2017 seems to fix the issues with the Auto 
 
 ## Known issues
 - As mentioned earlier, by using the UPNP standard I am limited to the graphical appearance. But I could look at writing my own graphical layout in the future
+- Scene triggers dont seem to be working yet. Have not figured out why yet.
 
 If you have any issues. Please set Debug to 1 on your Tado.com connection, hit reload and send me a copy of the log file produced. You can access your log file from SSH or via this address, http://<VERA_IP>/cgi-bin/cmh/log.sh?Device=LuaUPnP
 
