@@ -1,5 +1,4 @@
-# tado plugin for Vera / MiOS
-## Tado Plugin for Vera / MiOS
+# Tado Plugin for Vera / MiOS
 
 I have created this plugin that will be available on the Vera / MiOS app store for end users to install.
 
