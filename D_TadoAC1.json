@@ -601,6 +601,14 @@
                 "arguments": {
                     "NewModeTarget": "AutoChangeOver"
                 }
+            },
+            "cmd_5": {
+                "label": "DRY",
+                "serviceId": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
+                "action": "SetModeTarget",
+                "arguments": {
+                    "NewModeTarget": "Dry"
+                }
             }
         },
         "group_2": {
@@ -645,7 +653,7 @@
         },
         "group_4": {
             "cmd_1": {
-                "label": "Set Fan On",
+                "label": "Set Fan On (High)",
                 "serviceId": "urn:upnp-org:serviceId:HVAC_FanOperatingMode1",
                 "action": "SetMode",
                 "arguments": {
@@ -659,11 +667,19 @@
                 "arguments": {
                     "NewMode": "Auto"
                 }
+            },
+            "cmd_3": {
+                "label": "Set Fan On (Low)",
+                "serviceId": "urn:upnp-org:serviceId:HVAC_FanOperatingMode1",
+                "action": "SetMode",
+                "arguments": {
+                    "NewMode": "PeriodicOn"
+                }
             }
         },
         "group_5": {
             "cmd_1": {
-                "label": "Normal",
+                "label": "Normal (Manual)",
                 "serviceId": "urn:upnp-org:serviceId:SwitchPower1",
                 "action": "SetTarget",
                 "arguments": {
@@ -671,7 +687,7 @@
                 }
             },
             "cmd_2": {
-                "label": "Energy",
+                "label": "Energy (Smart Schedule)",
                 "serviceId": "urn:upnp-org:serviceId:SwitchPower1",
                 "action": "SetTarget",
                 "arguments": {
@@ -719,14 +735,14 @@
                             "Heat-Cool": "AutoChangeOver",
                             "HumanFriendlyText": {
                                 "lang_tag": "ui7_hft_thermostat_set_to_heatcool",
-                                "text": "Whenever the _DEVICE_NAME_ is set to heat-cool"
+                                "text": "Whenever the _DEVICE_NAME_ is set to auto"
                             }
                         },
                         {
-                            "Eco": "EnergySavingsMode",
+                            "Dry": "Dry",
                             "HumanFriendlyText": {
-                                "lang_tag": "ui7_hft_thermostat_set_to_ecocool",
-                                "text": "Whenever the _DEVICE_NAME_ is set to ecocool"
+                                "lang_tag": "ui7_hft_thermostat_set_to_dry",
+                                "text": "Whenever the _DEVICE_NAME_ is set to dry"
                             }
                         }
                     ],
@@ -865,12 +881,136 @@
             ]
         },
         {
-            "id": 14,
+            "id": 15,
             "label": {
-                "lang_tag": "ui7_thermostat_state_changes",
-                "text": "Thermostat State Changes"
+                "lang_tag": "ui7_humidity_goes_below",
+                "text": "Ambient humidity goes below"
             },
-            "serviceId": "urn:upnp-org:serviceId:HVAC_OperatingState1",
+            "serviceId": "urn:schemas-micasaverde-com:serviceId:HumiditySensor1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "CurrentLevel",
+                    "comparisson": "<",
+                    "prefix": {
+                        "lang_tag": "ui7_humidity",
+                        "text": "humidity"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_percentage",
+                        "text": "%"
+                    },
+                    "minValue": "0",
+                    "maxValue": "100",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_humidity_goes_below",
+                        "text": "_DEVICE_NAME_ humidity goes below _ARGUMENT_VALUE_ %"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "label": {
+                "lang_tag": "ui7_humidity_goes_above",
+                "text": "Ambient humidity goes above"
+            },
+            "serviceId": "urn:schemas-micasaverde-com:serviceId:HumiditySensor1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "CurrentLevel",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "ui7_humidity",
+                        "text": "humidity"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_percentage",
+                        "text": "%"
+                    },
+                    "minValue": "0",
+                    "maxValue": "100",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_humidity_goes_above",
+                        "text": "_DEVICE_NAME_ humidity goes above _ARGUMENT_VALUE_ %"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 18,
+            "label": {
+                "lang_tag": "ui7_fanspeed_goes_above",
+                "text": "Fan Speed goes above"
+            },
+            "serviceId": "urn:upnp-org:serviceId:FanSpeed1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "ui1",
+                    "name": "FanSpeedTarget",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "ui7_fanspeed",
+                        "text": "Fan Speed"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_percentage",
+                        "text": "%"
+                    },
+                    "minValue": "0",
+                    "maxValue": "100",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_fanspeed_goes_above",
+                        "text": "_DEVICE_NAME_ fan speed goes above _ARGUMENT_VALUE_ %"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 19,
+            "label": {
+                "lang_tag": "ui7_fanspeed_goes_below",
+                "text": "Fan Speed goes below"
+            },
+            "serviceId": "urn:upnp-org:serviceId:FanSpeed1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "ui1",
+                    "name": "FanSpeedTarget",
+                    "comparisson": "<",
+                    "prefix": {
+                        "lang_tag": "ui7_fanspeed",
+                        "text": "Fan Speed"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_percentage",
+                        "text": "%"
+                    },
+                    "minValue": "0",
+                    "maxValue": "100",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_hft_fanspeed_goes_below",
+                        "text": "_DEVICE_NAME_ fan speed goes below _ARGUMENT_VALUE_ %"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "label": {
+                "lang_tag": "ui7_thermostat_energy_mode_changes",
+                "text": "Thermostat Energy Mode Changes"
+            },
+            "serviceId": "urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
             "argumentList": [
                 {
                     "id": 1,
@@ -878,39 +1018,25 @@
                     "defaultValue": "",
                     "allowedValueList": [
                         {
-                            "Idle": "Idle",
+                            "Normal": "Normal",
                             "HumanFriendlyText": {
-                                "lang_tag": "ui7_hft_state_idle",
-                                "text": "_DEVICE_NAME_ is idle"
+                                "lang_tag": "ui7_hft_energy_set_normalmode",
+                                "text": "Whenever the _DEVICE_NAME_ is set to Normal (Manual mode)"
                             }
                         },
                         {
-                            "Heating": "Heating",
+                            "EnergySavingsMode": "EnergySavingsMode",
                             "HumanFriendlyText": {
-                                "lang_tag": "ui7_hft_state_heating",
-                                "text": "_DEVICE_NAME_ is actively heating"
-                            }
-                        },
-                        {
-                            "Cooling": "Cooling",
-                            "HumanFriendlyText": {
-                                "lang_tag": "ui7_hft_state_cooling",
-                                "text": "_DEVICE_NAME_ is actively cooling"
-                            }
-                        },
-                        {
-                            "FanOnly": "FanOnly",
-                            "HumanFriendlyText": {
-                                "lang_tag": "ui7_hft_state_fan",
-                                "text": "_DEVICE_NAME_ fan is running"
+                                "lang_tag": "ui7_hft_energy_set_energymode",
+                                "text": "Whenever the _DEVICE_NAME_ is set to Energy Mode (Smart Schedule)"
                             }
                         }
                     ],
-                    "name": "ModeState",
+                    "name": "EnergyModeStatus",
                     "comparisson": "=",
                     "prefix": {
-                        "lang_tag": "state",
-                        "text": "State"
+                        "lang_tag": "ui7_mode",
+                        "text": "Eco Mode"
                     },
                     "suffix": {}
                 }

@@ -11,7 +11,7 @@
         {
             "Label": {
                 "lang_tag": "tabname_control",
-                "text": "Settings"
+                "text": "Tado Settings"
             },
             "Position": "0",
             "TabType": "flash",
@@ -56,18 +56,18 @@
                         "Service": "urn:fr87-com:serviceId:Tado1",
                         "Variable": "username",
                         "Top": 20,
-                        "Left": 180,
-                        "Width": 100,
+                        "Left": 280,
+                        "Width": 200,
                         "Height": 20
                     }
                 },
                 {
                     "ControlType": "input",
-                    "ID": 101,
+                    "ID": "usernamefield",
                     "Display": {
                         "Top": 36,
                         "Left": 50,
-                        "Width": 100,
+                        "Width": 200,
                         "Height": 20
                     }
                 },
@@ -79,7 +79,7 @@
                     },
                     "Display": {
                         "Top": 36,
-                        "Left": 180,
+                        "Left": 280,
                         "Width": 50,
                         "Height": 20
                     },
@@ -89,7 +89,7 @@
                         "Parameters": [
                             {
                                 "Name": "username",
-                                "ID": 101
+                                "ID": "usernamefield"
                             }
                         ]
                     }
@@ -113,18 +113,18 @@
                         "Service": "urn:fr87-com:serviceId:Tado1",
                         "Variable": "password",
                         "Top": 68,
-                        "Left": 180,
-                        "Width": 100,
+                        "Left": 280,
+                        "Width": 200,
                         "Height": 20
                     }
                 },
                 {
                     "ControlType": "input",
-                    "ID": 102,
+                    "ID": "passwordfield",
                     "Display": {
                         "Top": 84,
                         "Left": 50,
-                        "Width": 100,
+                        "Width": 200,
                         "Height": 20
                     }
                 },
@@ -136,7 +136,7 @@
                     },
                     "Display": {
                         "Top": 84,
-                        "Left": 180,
+                        "Left": 280,
                         "Width": 50,
                         "Height": 20
                     },
@@ -146,7 +146,7 @@
                         "Parameters": [
                             {
                                 "Name": "password",
-                                "ID": 102
+                                "ID": "passwordfield"
                             }
                         ]
                     }
@@ -170,18 +170,18 @@
                         "Service": "urn:fr87-com:serviceId:Tado1",
                         "Variable": "debug",
                         "Top": 116,
-                        "Left": 180,
-                        "Width": 100,
+                        "Left": 280,
+                        "Width": 200,
                         "Height": 20
                     }
                 },
                 {
                     "ControlType": "input",
-                    "ID": 103,
+                    "ID": "debugfield",
                     "Display": {
                         "Top": 132,
                         "Left": 50,
-                        "Width": 100,
+                        "Width": 200,
                         "Height": 20
                     }
                 },
@@ -193,7 +193,7 @@
                     },
                     "Display": {
                         "Top": 132,
-                        "Left": 180,
+                        "Left": 280,
                         "Width": 50,
                         "Height": 20
                     },
@@ -203,7 +203,7 @@
                         "Parameters": [
                             {
                                 "Name": "debug",
-                                "ID": 103
+                                "ID": "debugfield"
                             }
                         ]
                     }
@@ -216,7 +216,7 @@
                     },
                     "Display": {
                         "Top": 180,
-                        "Left": 180,
+                        "Left": 280,
                         "Width": 50,
                         "Height": 20
                     },

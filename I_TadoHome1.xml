@@ -12,44 +12,191 @@
 <actionList>
 	<action>
 		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
-		<name>GetName</name>
+		<name>Getname</name>
 		<run>
-			return luup.variable_get(HOME_SID, "name", lul_device)
+			return luup.variable_get(HOME_SID, 'name', lul_device)
 		</run>
 	</action>
-    <action>
-        <serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
-        <name>GetTimezone</name>
-        <run>
-            return luup.variable_get(HOME_SID, "timezone", lul_device)
-        </run>
-    </action>
-    <action>
+	<action>
 		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
-		<name>GetOutsideTemperatureC</name>
+		<name>GetdateTimeZone</name>
 		<run>
-			return luup.variable_get(HOME_SID, "outsideTemperaturecelsius", lul_device)
+			return luup.variable_get(HOME_SID, 'dateTimeZone', lul_device)
 		</run>
 	</action>
-    <action>
+	<action>
 		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
-		<name>GetOutsideTemperatureF</name>
+		<name>GettemperatureUnit</name>
 		<run>
-			return luup.variable_get(HOME_SID, "outsideTemperaturefahrenheit", lul_device)
+			return luup.variable_get(HOME_SID, 'temperatureUnit', lul_device)
 		</run>
 	</action>
-    <action>
+	<action>
 		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
-		<name>GetWeatherState</name>
+		<name>Getpartner</name>
 		<run>
-			return luup.variable_get(HOME_SID, "weatherStatevalue", lul_device)
+			return luup.variable_get(HOME_SID, 'partner', lul_device)
 		</run>
 	</action>
-        <action>
+	<action>
 		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
-		<name>GetSolarIntensity</name>
+		<name>GetcontactDetailsname</name>
 		<run>
-			return luup.variable_get(HOME_SID, "solarIntensitypercentage", lul_device)
+			return luup.variable_get(HOME_SID, 'contactDetailsname', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetcontactDetailsemail</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'contactDetailsemail', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetcontactDetailsphone</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'contactDetailsphone', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetaddressLine1</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'addressLine1', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetaddressLine2</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'addressLine2', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetzipCode</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'zipCode', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>Getcity</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'city', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>Getstate</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'state', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>Getcountry</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'country', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>Getgeolocationlatitude</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'geolocationlatitude', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>Getgeolocationlongitude</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'geolocationlongitude', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetsolarIntensitytype</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'solarIntensitytype', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetsolarIntensitypercentage</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'solarIntensitypercentage', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetsolarIntensitytimestamp</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'solarIntensitytimestamp', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetoutsideTemperaturecelsius</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'outsideTemperaturecelsius', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetoutsideTemperaturefahrenheit</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'outsideTemperaturefahrenheit', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetoutsideTemperaturetimestamp</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'outsideTemperaturetimestamp', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetoutsideTemperaturetype</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'outsideTemperaturetype', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetoutsideTemperatureprecisioncelsius</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'outsideTemperatureprecisioncelsius', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetoutsideTemperatureprecisionfahrenheit</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'outsideTemperatureprecisionfahrenheit', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetweatherStatetype</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'weatherStatetype', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetweatherStatevalue</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'weatherStatevalue', lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoHome1</serviceId>
+		<name>GetweatherStatetimestamp</name>
+		<run>
+			return luup.variable_get(HOME_SID, 'weatherStatetimestamp', lul_device)
 		</run>
 	</action>
 </actionList>

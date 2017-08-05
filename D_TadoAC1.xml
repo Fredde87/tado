@@ -65,7 +65,11 @@
         <serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
         <SCPDURL>S_SwitchPower1.xml</SCPDURL>
       </service>
-      
+      <service>
+        <serviceType>urn:schemas-micasaverde-com:device:HumiditySensor:1</serviceType>
+        <serviceId>urn:schemas-micasaverde-com:serviceId:HumiditySensor1</serviceId>
+        <SCPDURL>S_HumiditySensor1.xml</SCPDURL>
+      </service>  
    </serviceList>
     <implementationList>
       <implementationFile>I_TadoAC1.xml</implementationFile>

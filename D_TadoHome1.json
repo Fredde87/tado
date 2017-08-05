@@ -290,5 +290,241 @@
             "Function": "advanced_device"
         }
     ],
+    "eventList2": [
+        {
+            "id": 1,
+            "label": {
+                "lang_tag": "ui7_solar_intensity_above",
+                "text": "Solar Intensity goes above"
+            },
+            "serviceId": "urn:schemas-fr87-com:serviceId:TadoHome1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "solarIntensitypercentage",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "ui7_solar_intensity",
+                        "text": "Solar Intensity"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_percentage",
+                        "text": "%"
+                    },
+                    "minValue": "0",
+                    "maxValue": "100",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_solar_intensity_goes_above",
+                        "text": "_DEVICE_NAME_ solar intensity goes above _ARGUMENT_VALUE_ %"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "label": {
+                "lang_tag": "ui7_solar_intensity_below",
+                "text": "Solar Intensity goes below"
+            },
+            "serviceId": "urn:schemas-fr87-com:serviceId:TadoHome1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "solarIntensitypercentage",
+                    "comparisson": "<",
+                    "prefix": {
+                        "lang_tag": "ui7_solar_intensity",
+                        "text": "Solar Intensity"
+                    },
+                    "suffix": {
+                        "lang_tag": "ui7_percentage",
+                        "text": "%"
+                    },
+                    "minValue": "0",
+                    "maxValue": "100",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_solar_intensity_goes_below",
+                        "text": "_DEVICE_NAME_ solar intensity goes below _ARGUMENT_VALUE_ %"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "label": {
+                "lang_tag": "ui7_outside_temperature_belowC",
+                "text": "Outside Temperature (C) goes below"
+            },
+            "serviceId": "urn:schemas-fr87-com:serviceId:TadoHome1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "outsideTemperaturecelsius",
+                    "comparisson": "<",
+                    "prefix": {
+                        "lang_tag": "ui7_outside_temperature",
+                        "text": "Outside Temperature"
+                    },
+                    "suffix": {
+                        "text": "C"
+                    },
+                    "minValue": "-35",
+                    "maxValue": "95",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_outside_temperature_goes_belowC",
+                        "text": "_DEVICE_NAME_ outside temperature goes below _ARGUMENT_VALUE_ C"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "label": {
+                "lang_tag": "ui7_outside_temperature_aboveC",
+                "text": "Outside Temperature (C) goes above"
+            },
+            "serviceId": "urn:schemas-fr87-com:serviceId:TadoHome1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "outsideTemperaturecelsius",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "ui7_outside_temperature",
+                        "text": "Outside Temperature"
+                    },
+                    "suffix": {
+                        "text": "C"
+                    },
+                    "minValue": "-35",
+                    "maxValue": "95",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_outside_temperature_goes_aboveC",
+                        "text": "_DEVICE_NAME_ outside temperature goes above _ARGUMENT_VALUE_ C"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "label": {
+                "lang_tag": "ui7_outside_temperature_belowF",
+                "text": "Outside Temperature (F) goes below"
+            },
+            "serviceId": "urn:schemas-fr87-com:serviceId:TadoHome1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "outsideTemperaturefahrenheit",
+                    "comparisson": "<",
+                    "prefix": {
+                        "lang_tag": "ui7_outside_temperature",
+                        "text": "Outside Temperature"
+                    },
+                    "suffix": {
+                        "text": "F"
+                    },
+                    "minValue": "-35",
+                    "maxValue": "95",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_outside_temperature_goes_belowF",
+                        "text": "_DEVICE_NAME_ outside temperature goes below _ARGUMENT_VALUE_ F"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "label": {
+                "lang_tag": "ui7_outside_temperature_aboveF",
+                "text": "Outside Temperature (F) goes above"
+            },
+            "serviceId": "urn:schemas-fr87-com:serviceId:TadoHome1",
+            "norepeat": "1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "i4",
+                    "name": "outsideTemperaturefahrenheit",
+                    "comparisson": ">",
+                    "prefix": {
+                        "lang_tag": "ui7_outside_temperature",
+                        "text": "Outside Temperature"
+                    },
+                    "suffix": {
+                        "text": "F"
+                    },
+                    "minValue": "-35",
+                    "maxValue": "95",
+                    "HumanFriendlyText": {
+                        "lang_tag": "ui7_outside_temperature_goes_aboveF",
+                        "text": "_DEVICE_NAME_ outside temperature goes above _ARGUMENT_VALUE_ F"
+                    }
+                }
+            ]
+        },        
+        {
+            "id": 7,
+            "label": {
+                "lang_tag": "ui7_weatherstate",
+                "text": "Weather State"
+            },
+            "serviceId": "urn:schemas-fr87-com:serviceId:TadoHome1",
+            "argumentList": [
+                {
+                    "id": 1,
+                    "dataType": "string",
+                    "defaultValue": "",
+                    "allowedValueList": [
+                        {
+                            "value": "SUN",
+                            "HumanFriendlyText": {
+                                "lang_tag": "ui7_weatherstate_scattererd_rain",
+                                "text": "Whenever _DEVICE_NAME_ weather is Sunny"
+                            }
+                        },
+                        {
+                            "value": "SCATTERED_RAIN",
+                            "HumanFriendlyText": {
+                                "lang_tag": "ui7_weatherstate_scattererd_rain",
+                                "text": "Whenever _DEVICE_NAME_ weather is Scattered Rain"
+                            }
+                        },
+                        {
+                            "value": "FOGGY",
+                            "HumanFriendlyText": {
+                                "lang_tag": "ui7_weatherstate_foggy",
+                                "text": "Whenever _DEVICE_NAME_ weather is Foggy"
+                            }
+                        },
+                        {
+                            "value": "NIGHT_CLOUDY",
+                            "HumanFriendlyText": {
+                                "lang_tag": "ui7_weatherstate_night_cloudy",
+                                "text": "Whenever _DEVICE_NAME_ weather is Cloudy (Night)"
+                            }
+                        }
+                    ],
+                    "name": "weatherStatevalue",
+                    "comparisson": "=",
+                    "prefix": {
+                        "lang_tag": "ui7_weather",
+                        "text": "Weather"
+                    },
+                    "suffix": {}
+                }
+            ]
+        }
+    ],
     "device_type": "urn:schemas-fr87-com:device:TadoHome:1"
 }

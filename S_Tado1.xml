@@ -59,5 +59,32 @@
         </argument>
       </argumentList>
     </action>
+    <action>
+     <name>GetName</name>
+     <argumentList>
+       <argument>
+         <name>name</name>
+         <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+     <name>GetEmail</name>
+     <argumentList>
+       <argument>
+         <name>email</name>
+         <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+     <name>GetLocale</name>
+     <argumentList>
+       <argument>
+         <name>locale</name>
+         <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
   </actionList>
 </scpd>

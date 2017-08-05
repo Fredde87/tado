@@ -1,5 +1,4 @@
 -- Default values chosen if none are currently available
-local TADO_DEFAULT_ON_MODE = "HEAT"
 local TADO_DEFAULT_ON_CELSIUS = "21.00"
 local TADO_DEFAULT_ON_FAHRENHEIT = "70.00"
 local TADO_DEFAULT_ON_FANSPEED = "AUTO"
@@ -40,6 +39,8 @@ local SETPOINT_HEAT_SID = "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat"
 local SETPOINT_COOL_SID = "urn:upnp-org:serviceId:TemperatureSetpoint1_Cool"
 
 local TEMPSENSOR_SID = "urn:upnp-org:serviceId:TemperatureSensor1"
+
+local HUMIDITY_SID = "urn:schemas-micasaverde-com:serviceId:HumiditySensor1"
 
 local child_devices = luup.chdev.start(lul_device)
 
@@ -352,6 +353,8 @@ function Tado_RefreshZone(tado_homeid, tado_zoneid, tado_deviceid)
     luup.variable_set(AC_SID, "sensorDataPointshumiditypercentage", obj.sensorDataPoints.humidity.percentage or "", tado_deviceid)
     luup.variable_set(AC_SID, "sensorDataPointshumiditytimestamp", obj.sensorDataPoints.humidity.timestamp or "", tado_deviceid)
 
+    luup.variable_set(HUMIDITY_SID, "CurrentLevel", obj.sensorDataPoints.humidity.percentage or "", tado_deviceid)
+    
     -- Convert our data to upnp standards (HVAC Mode)
     local tado_oper_mode = "Unknown"
     if (obj.setting.mode == "COOL") then
@@ -360,6 +363,8 @@ function Tado_RefreshZone(tado_homeid, tado_zoneid, tado_deviceid)
         tado_oper_mode = "HeatOn"
     elseif (obj.setting.mode == "AUTO") then
         tado_oper_mode = "AutoChangeOver"
+    elseif (obj.setting.power == "DRY") then
+        tado_oper_mode = "Dry"
     elseif (obj.setting.power == "OFF") then
         tado_oper_mode = "Off"
     end
@@ -380,22 +385,23 @@ function Tado_RefreshZone(tado_homeid, tado_zoneid, tado_deviceid)
     local tado_fan_speed = 0
     if (not obj.setting.fanSpeed) then
         tado_fan_mode = "PeriodicOn"
+        tado_fan_speed = "25"
     elseif (obj.setting.fanSpeed == "AUTO") then
         tado_fan_mode = "Auto"
     elseif (obj.setting.fanSpeed == "LOW") then
         tado_fan_mode = "ContinuousOn"
-        tado_fan_speed = "0"
+        tado_fan_speed = "50"
     elseif (obj.setting.fanSpeed == "MIDDLE") then
         tado_fan_mode = "ContinuousOn"
-        tado_fan_speed = "50"
+        tado_fan_speed = "75"
     elseif (obj.setting.fanSpeed == "HIGH") then
         tado_fan_mode = "ContinuousOn"
         tado_fan_speed = "100"
     end
     luup.variable_set(HVAC_FAN_SID, "Mode", tado_fan_mode or "", tado_deviceid)
 
-    luup.variable_set(FANSPEED_SID, "FanSpeedTarget", tado_fan_mode or "", tado_deviceid)
-    luup.variable_set(FANSPEED_SID, "FanSpeedStatus", tado_fan_mode or "", tado_deviceid)
+    luup.variable_set(FANSPEED_SID, "FanSpeedTarget", tado_fan_speed or "", tado_deviceid)
+    luup.variable_set(FANSPEED_SID, "FanSpeedStatus", tado_fan_speed or "", tado_deviceid)
 
 end
 
@@ -577,30 +583,19 @@ function Tado_setOverlay(bool_status, lul_device)
             tado_fan_mode = "AUTO"
         end
 
-        -- Do the same for the mode (default mode is used in case the user sends us some unexpected string. Rather than fail we'll fall back to the deafult value)
-        local tado_oper_mode = TADO_DEFAULT_ON_MODE
-        if (ModeStatus == "Off") then
-            tado_oper_mode = "OFF"
-        elseif (ModeStatus == "CoolOn") then
-            tado_oper_mode = "COOL"
-        elseif (ModeStatus == "HeatOn") then
-            tado_oper_mode = "HEAT"
-        elseif (ModeStatus == "AutoChangeOver") then
-            tado_oper_mode = "AUTO"
-        end
 
         -- Now lets find out min and max values that are valid. If they dont exists (for smart thermostats) then use the hard coded values
         local temp_min, temp_max
-        if (TADO_SCALE == "C" and tado_oper_mode == "COOL") then
+        if (TADO_SCALE == "C" and ModeStatus == "CoolOn") then
             temp_min = luup.variable_get(AC_SID, "TadoCoolMinCelcius", lul_device) or "5"
             temp_max = luup.variable_get(AC_SID, "TadoCoolMaxCelcius", lul_device) or "25"
-        elseif (TADO_SCALE == "F" and tado_oper_mode == "COOL") then
+        elseif (TADO_SCALE == "F" and ModeStatus == "CoolOn") then
             temp_min = luup.variable_get(AC_SID, "TadoCoolMinFahrenheit", lul_device) or "41"
             temp_max = luup.variable_get(AC_SID, "TadoCoolMaxFahrenheit", lul_device) or "77"
-        elseif (TADO_SCALE == "C" and tado_oper_mode == "HEAT") then
+        elseif (TADO_SCALE == "C" and ModeStatus == "HeatOn") then
             temp_min = luup.variable_get(AC_SID, "TadoHeatMinCelcius", lul_device) or "5"
             temp_max = luup.variable_get(AC_SID, "TadoHeatMaxCelcius", lul_device) or "25"
-        elseif (TADO_SCALE == "F" and tado_oper_mode == "HEAT") then
+        elseif (TADO_SCALE == "F" and ModeStatus == "HeatOn") then
             temp_min = luup.variable_get(AC_SID, "TadoHeatMinFahrenheit", lul_device) or "41"
             temp_max = luup.variable_get(AC_SID, "TadoHeatMaxFahrenheit", lul_device) or "77"
         end
@@ -608,7 +603,7 @@ function Tado_setOverlay(bool_status, lul_device)
         
         -- If the requested value is outside the valid range then set it to the closest valid value
         local tado_temperature
-        if ( TADO_SCALE == "C" and (tado_oper_mode == "HEAT" or tado_oper_mode == "COOL") ) then
+        if ( TADO_SCALE == "C" and (ModeStatus == "HeatOn" or ModeStatus == "CoolOn") ) then
             tado_temperature = '"celsius": ' .. TADO_DEFAULT_ON_CELSIUS
             if (tonumber(CurrentSetPoint)) then
                 if (tonumber(CurrentSetPoint) > tonumber(temp_max)) then
@@ -619,7 +614,7 @@ function Tado_setOverlay(bool_status, lul_device)
                     tado_temperature = '"celsius": ' .. CurrentSetPoint                                                                  
                 end
             end
-        elseif ( TADO_SCALE == "F" and (tado_oper_mode == "HEAT" or tado_oper_mode == "COOL") ) then
+        elseif ( TADO_SCALE == "F" and (ModeStatus == "HeatOn" or ModeStatus == "CoolOn") ) then
             tado_temperature = '"fahrenheit": ' .. TADO_DEFAULT_ON_FAHRENHEIT
             if (tonumber(CurrentSetPoint)) then
                 if (tonumber(CurrentSetPoint) > tonumber(temp_max)) then
@@ -639,6 +634,9 @@ function Tado_setOverlay(bool_status, lul_device)
         elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING" and ModeStatus == "AutoChangeOver") then
             -- Auto mode does for some reason not take a temperature. Not sure what it actually does
             json_output_part1 = ',"power":"ON","mode":"AUTO"}}'
+        elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING" and ModeStatus == "Dry") then
+            -- Auto mode does for some reason not take a temperature. Not sure what it actually does
+            json_output_part1 = ',"power":"ON","mode":"DRY"}}'
         elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING" and ModeStatus == "CoolOn") then
             -- Cool mode only exists on the ACs
             json_output_part1 = ',"power":"ON","mode":"COOL","temperature":{' .. tado_temperature .. '},"fanSpeed":"' .. tado_fan_mode .. '"}}'
@@ -690,7 +688,7 @@ function Tado_setModeTarget(lul_device, NewModeTarget)
     Tado_Debug("In setModeTarget, been requested to set mode: " .. NewModeTarget)
 
     -- Lets see if we have been given a valid mode first off all
-    if (NewModeTarget == "Off" or NewModeTarget == "CoolOn" or NewModeTarget == "HeatOn" or NewModeTarget == "AutoChangeOver") then
+    if (NewModeTarget == "Off" or NewModeTarget == "CoolOn" or NewModeTarget == "HeatOn" or NewModeTarget == "AutoChangeOver" or NewModeTarget == "Dry") then
         -- Lets update ModeStatus first with our new value before we call our setOverlay function which will then retrieve it to create a curl command needed to execute the change
         luup.variable_set(HVAC_SID, "ModeStatus", NewModeTarget or "", lul_device)
 
@@ -728,7 +726,7 @@ function Tado_SetMode(lul_device, NewMode)
     Tado_Debug("In setMode (fan), been requested to set mode: " .. NewMode)
 
     -- Lets see if we have been given a valid mode first off all
-    if (NewMode == "PeriodicOn" or NewMode == "ContinuousOn" or NewMode == "Auto") then
+    if ((NewMode == "PeriodicOn" or NewMode == "ContinuousOn" or NewMode == "Auto") and luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING") then
         -- Lets update Mode first with our new value before we call our setOverlay function which will then retrieve it to create a curl command needed to execute the change
         luup.variable_set(HVAC_FAN_SID, "Mode", NewMode, lul_device)
 
@@ -736,6 +734,7 @@ function Tado_SetMode(lul_device, NewMode)
         Tado_setOverlay(1, lul_device)
     else
         -- Error
+        Tado_Debug("Invalid Fan Mode selected or device does not support Fan Mode")
         return 1
     end
 
