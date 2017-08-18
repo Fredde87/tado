@@ -1,6 +1,6 @@
 # Tado Plugin for Vera / MiOS
 
-I have created this plugin that will be available on the Vera / MiOS app store for end users to install.
+I have created this plugin that is available on the Vera / MiOS app store for end users to install.
 
 I wrote the plugin to control my Smart AC Controller from Tado but I have also tested it against a Smart Thermostat. I have not tested it against a Smart Radiator Valve as I have not got one but if anyone wants to lend me their Tado.com account then I can test and update to add support for it.
 
