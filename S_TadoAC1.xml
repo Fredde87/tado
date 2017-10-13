@@ -4,7 +4,109 @@
     <major>1</major>
     <minor>0</minor>
   </specVersion>
+  <serviceStateTable>
+      <stateVariable>
+			<name>EnergyModeStatusTado</name>
+			<dataType>string</dataType>
+			<defaultValue>Normal</defaultValue>
+            <shortCode>eco</shortCode>
+			<allowedValueList>
+				<allowedValue>Normal</allowedValue>
+				<allowedValue>EnergySavingsMode</allowedValue>
+			</allowedValueList>
+		</stateVariable>
+  </serviceStateTable>
   <actionList>
+    <action>
+      <name>SetDefaultCelsius</name>
+      <argumentList>
+        <argument>
+          <name>defaultcelsius</name>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetDefaultCelsius</name>
+      <argumentList>
+        <argument>
+          <name>defaultcelsius</name>
+          <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>SetDefaultFahrenheit</name>
+      <argumentList>
+        <argument>
+          <name>defaultfahrenheit</name>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetDefaultFahrenheit</name>
+      <argumentList>
+        <argument>
+          <name>defaultfahrenheit</name>
+          <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>SetDefaultFanSpeed</name>
+      <argumentList>
+        <argument>
+          <name>defaultfanspeed</name>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetDefaultFanSpeed</name>
+      <argumentList>
+        <argument>
+          <name>defaultfanspeed</name>
+          <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>SetDefaultExpiration</name>
+      <argumentList>
+        <argument>
+          <name>defaultexpiration</name>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetDefaultExpiration</name>
+      <argumentList>
+        <argument>
+          <name>defaultexpiration</name>
+          <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>SetDefaultTimerInSeconds</name>
+      <argumentList>
+        <argument>
+          <name>defaulttimer</name>
+          <direction>in</direction>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetDefaultTimerInSeconds</name>
+      <argumentList>
+        <argument>
+          <name>defaulttimer</name>
+          <direction>out</direction>
+        </argument>
+      </argumentList>
+    </action>
     <action>
      <name>GetTadoHomeID</name>
      <argumentList>
@@ -303,19 +405,19 @@
       </argumentList>
     </action>
     <action>
-     <name>GetTadoCoolMinCelcius</name>
+     <name>GetTadoCoolMinCelsius</name>
      <argumentList>
        <argument>
-         <name>TadoCoolMinCelcius</name>
+         <name>TadoCoolMinCelsius</name>
          <direction>out</direction>
         </argument>
       </argumentList>
     </action>
     <action>
-     <name>GetTadoCoolMaxCelcius</name>
+     <name>GetTadoCoolMaxCelsius</name>
      <argumentList>
        <argument>
-         <name>TadoCoolMaxCelcius</name>
+         <name>TadoCoolMaxCelsius</name>
          <direction>out</direction>
         </argument>
       </argumentList>
@@ -348,19 +450,19 @@
       </argumentList>
     </action>
     <action>
-     <name>GetTadoHeatMinCelcius</name>
+     <name>GetTadoHeatMinCelsius</name>
      <argumentList>
        <argument>
-         <name>TadoHeatMinCelcius</name>
+         <name>TadoHeatMinCelsius</name>
          <direction>out</direction>
         </argument>
       </argumentList>
     </action>
     <action>
-     <name>GetTadoHeatMaxCelcius</name>
+     <name>GetTadoHeatMaxCelsius</name>
      <argumentList>
        <argument>
-         <name>TadoHeatMaxCelcius</name>
+         <name>TadoHeatMaxCelsius</name>
          <direction>out</direction>
         </argument>
       </argumentList>

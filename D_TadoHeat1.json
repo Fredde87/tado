@@ -273,16 +273,322 @@
 				}
 			]
 		},
-		{
-			"Label": {
-				"lang_tag": "ui7_settings",
-				"text": "Settings"
-			},
-			"Position": "1",
-			"TabType": "javascript",
-			"ScriptName": "shared.js",
-			"Function": "simple_device"
-		},
+        {
+            "Label": {
+                "lang_tag": "tabname_control",
+                "text": "Heating Settings"
+            },
+            "Position": "0",
+            "TabType": "flash",
+            "SceneGroup": [
+                {
+                    "id": "1",
+                    "top": "0.5",
+                    "left": "0",
+                    "x": "2",
+                    "y": "3"
+                }
+            ],
+            "ControlGroup": [
+                {
+                    "id": "1",
+                    "type": "info",
+                    "scenegroup": "1"
+                },
+                {
+                    "id": "2",
+                    "type": "info",
+                    "scenegroup": "1"
+                }
+            ],
+            "Control": [
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Default Celsius (21.0 etc)"
+                    },
+                    "Display": {
+                        "Top": 20,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Variable": "DefaultCelsius",
+                        "Top": 20,
+                        "Left": 380,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": "defaultcelsiusfield",
+                    "Display": {
+                        "Top": 36,
+                        "Left": 50,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 36,
+                        "Left": 380,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Action": "SetDefaultCelsius",
+                        "Parameters": [
+                            {
+                                "Name": "defaultcelsius",
+                                "ID": "defaultcelsiusfield"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Default Fahrenheit (70.0 etc)"
+                    },
+                    "Display": {
+                        "Top": 68,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Variable": "DefaultFahrenheit",
+                        "Top": 68,
+                        "Left": 380,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": "defaultfahrenheitfield",
+                    "Display": {
+                        "Top": 84,
+                        "Left": 50,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 84,
+                        "Left": 380,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Action": "SetDefaultFahrenheit",
+                        "Parameters": [
+                            {
+                                "Name": "defaultfahrenheit",
+                                "ID": "defaultfahrenheitfield"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Default Fan Speed (AUTO, LOW, MIDDLE, HIGH)"
+                    },
+                    "Display": {
+                        "Top": 116,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Variable": "DefaultFanSpeed",
+                        "Top": 116,
+                        "Left": 380,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": "defaultfanspeedfield",
+                    "Display": {
+                        "Top": 132,
+                        "Left": 50,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 132,
+                        "Left": 380,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Action": "SetDefaultFanSpeed",
+                        "Parameters": [
+                            {
+                                "Name": "defaultfanspeed",
+                                "ID": "defaultfanspeedfield"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Expiration (MANUAL, TADO_MODE or TIMER)"
+                    },
+                    "Display": {
+                        "Top": 164,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Variable": "DefaultExpiration",
+                        "Top": 164,
+                        "Left": 380,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": "defaultexpirationfield",
+                    "Display": {
+                        "Top": 180,
+                        "Left": 50,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 180,
+                        "Left": 380,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Action": "SetDefaultExpiration",
+                        "Parameters": [
+                            {
+                                "Name": "defaultexpiration",
+                                "ID": "defaultexpirationfield"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Default Timer (in seconds)"
+                    },
+                    "Display": {
+                        "Top": 212,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "variable",
+                    "Display": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Variable": "DefaultTimerInSeconds",
+                        "Top": 212,
+                        "Left": 380,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "input",
+                    "ID": "defaulttimerfield",
+                    "Display": {
+                        "Top": 228,
+                        "Left": 50,
+                        "Width": 300,
+                        "Height": 20
+                    }
+                },
+                {
+                    "ControlType": "button",
+                    "Label": {
+                        "lang_tag": "cmd_set",
+                        "text": "Set"
+                    },
+                    "Display": {
+                        "Top": 228,
+                        "Left": 380,
+                        "Width": 50,
+                        "Height": 20
+                    },
+                    "Command": {
+                        "Service": "urn:fr87-com:serviceId:TadoAC1",
+                        "Action": "SetDefaultTimerInSeconds",
+                        "Parameters": [
+                            {
+                                "Name": "defaulttimer",
+                                "ID": "defaulttimerfield"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
 		{
 			"Label": {
 				"lang_tag": "ui7_advanced",

@@ -66,6 +66,79 @@
 			return luup.variable_get(CONN_SID, "locale", lul_device)
 		</run>
 	</action>
+
+    
+    <action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>SetDefaultCelsius</name>
+		<run>
+			luup.variable_set(AC_SID, "DefaultCelsius", lul_settings.defaultcelsius or "", lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetDefaultCelsius</name>
+		<run>
+			return luup.variable_get(AC_SID, "DefaultCelsius", lul_device)
+		</run>
+	</action>
+    <action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>SetDefaultFahrenheit</name>
+		<run>
+			luup.variable_set(AC_SID, "DefaultFahrenheit", lul_settings.defaultfahrenheit or "", lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetDefaultFahrenheit</name>
+		<run>
+			return luup.variable_get(AC_SID, "DefaultFahrenheit", lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>SetDefaultFanSpeed</name>
+		<run>
+			luup.variable_set(AC_SID, "DefaultFanSpeed", lul_settings.defaultfanspeed or "", lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetDefaultFanSpeed</name>
+		<run>
+			return luup.variable_get(AC_SID, "DefaultFanSpeed", lul_device)
+		</run>
+	</action>
+    	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>SetDefaultExpiration</name>
+		<run>
+			luup.variable_set(AC_SID, "DefaultExpiration", lul_settings.defaultexpiration or "", lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetDefaultExpiration</name>
+		<run>
+			return luup.variable_get(AC_SID, "DefaultExpiration", lul_device)
+		</run>
+	</action>
+    <action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>SetDefaultTimerInSeconds</name>
+		<run>
+			luup.variable_set(AC_SID, "DefaultTimerInSeconds", lul_settings.defaulttimer or "", lul_device)
+		</run>
+	</action>
+	<action>
+		<serviceId>urn:fr87-com:serviceId:TadoAC1</serviceId>
+		<name>GetDefaultTimerInSeconds</name>
+		<run>
+			return luup.variable_get(AC_SID, "DefaultTimerInSeconds", lul_device)
+		</run>
+	</action>
+    
     
     
     <action>
