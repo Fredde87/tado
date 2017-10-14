@@ -2,7 +2,7 @@
 
 I have created this plugin that is available on the Vera / MiOS app store for end users to install.
 
-I wrote the plugin to control my Smart AC Controller from Tado but I have also tested it against a Smart Thermostat. I have not tested it against a Smart Radiator Valve as I have not got one but if anyone wants to lend me their Tado.com account then I can test and update to add support for it.
+I wrote the plugin to control my Smart AC Controller from Tado but I have also tested it against a Smart Thermostat and a Smart Radiator Valve.
 
 In general it seems to be fairly stable now, but I havent got a large test base so I welcome any feedback from anyone who has tested it.
 
@@ -24,6 +24,10 @@ For example, setting the Fan speed. Tado offers Low, Middle, High and Auto value
 So I have mapped the features across so that Auto will map to Auto, ConstantOn will map to High and PeriodicOn will map to Low.
 
 When it comes to enabling Manual mode verus Smart Schedule, I have tied this to the Energy Mode. Enabling Energy Mode will set the Tado to the Smart Schedule (the thinking behind it is that you'll save money as it will not switch on if you are not home). Whilst Normal mode will put the Tado into Manual override mode. Then the thermostat will just act like an old dum thermostat.
+
+Update: I have added the option to change some default values used. On each Thermostat/Valve/AC Controller you now have a Heating Settings/AC Settings page. On here you can specify,
+* The default Celsius/Fahrenheit/FanSpeed used. These values are used if no previous value is available from tado.com. It's only really the AC Controller that need this as they are one directional IR controlled so the last value can't be retrieved. The default temperature value will therefore be used if you go from Off to Cool for example.
+* The Manual Mode used. Set to MANUAL for normal Manual mode, or set to TADO_MODE to have the Manual mode revert back to the Smart Schedule on the next Schedule Time. There is also a TIMER mode that can be set together with the Timer Expiry (set to 600 to have the Manual Mode go back to Smart Schedule after 10 minutes etc).
 
 ## UI7
 
