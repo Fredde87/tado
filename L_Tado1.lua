@@ -2,6 +2,8 @@
 local TADO_DEFAULT_ON_CELSIUS = "21.00"
 local TADO_DEFAULT_ON_FAHRENHEIT = "70.00"
 local TADO_DEFAULT_ON_FANSPEED = "AUTO"
+local TADO_DEFAULT_ON_WATER_CELSIUS = "55.00"
+local TADO_DEFAULT_ON_WATER_FAHRENHEIT = "130.00"
 
 local TADO_DEFAULT_EXPIRATION = "MANUAL"
 local TADO_DEFAULT_TIMER_IN_SECONDS = "3600"
@@ -20,10 +22,6 @@ local HOME_SID = "urn:fr87-com:serviceId:TadoHome1"
 local HOME_DEVICE = "urn:schemas-fr87-com:device:TadoHome:1"
 local AC_SID = "urn:fr87-com:serviceId:TadoAC1"
 local AC_DEVICE = "urn:schemas-fr87-com:device:TadoAC:1"
-local HEAT_SID = "urn:fr87-com:serviceId:TadoHeat1"
-local HEAT_DEVICE = "urn:schemas-fr87-com:device:TadoHeat:1"
-local HW_SID = "urn:fr87-com:serviceId:TadoHW1" -- Hotwater is for future use
-local HW_DEVICE = "urn:schemas-fr87-com:device:TadoHW:1" -- Hotwater is for future use
 
 local ZONETHERM_SID = "urn:schemas-upnp-org:serviceId:HVAC_ZoneThermostat1"
 local ZONETHERM_DEVICE = "urn:schemas-upnp-org:device:HVAC_ZoneThermostat:1"
@@ -100,7 +98,7 @@ function Tado_ErrorCheck(obj, err)
         -- We have at least 1 error, lets loop through the errors and log them
         for i = 1,#obj.errors do
             -- Lets log it (no need to use Tado_Debug as we always want to print errors for users)
-            luup.log("Tado (" .. data.username .. "): Error: " .. obj.errors[i].title .. " - " .. obj.errors[i].code)
+            luup.log("Tado (" .. data.username .. "): Error: " .. obj.errors[i].code .. " - " .. obj.errors[i].title)
         end
         -- Lets return from the function here as there is no point in proceeding further
         return 2
@@ -135,7 +133,7 @@ function Tado_RefreshHomes(tado_homeid)
     Tado_Debug("Getting Home detail for home: " .. tado_homeid)
 
     -- We use curl to send the HTTP request to get the JSON reply. We are authenticating via parameters as thats how the latest Tado app does it
-    local curlCommand = 'curl -k -L "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
+    local curlCommand = 'curl -k -L -H "Content-Type: application/json" "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
     local stdout = io.popen(curlCommand)
     local tado_home = stdout:read("*a")
     stdout:close()
@@ -186,14 +184,14 @@ function Tado_RefreshWeather(tado_homeid)
     Tado_Debug("Getting Weather for home: " .. tado_homeid)
 
     -- We use curl to send the HTTP request to get the JSON reply. We are authenticating via parameters as thats how the latest Tado app does it
-    local curlCommand = 'curl -k -L "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/weather?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
+    local curlCommand = 'curl -k -L -H "Content-Type: application/json" "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/weather?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
     local stdout = io.popen(curlCommand)
     local tado_weather = stdout:read("*a")
     stdout:close()
 
     -- Lets use dkjson to decode the JSON response
     local obj, pos, err = tado_json.decode (tado_weather, 1, nil)
-
+    
     -- Need make the delayed call to run this function again here.
     -- Otherwise our function will not run again in 15 minutes if we received an error message from the last curl command
     luup.call_delay("Tado_RefreshWeather", 901, tado_homeid)
@@ -259,7 +257,7 @@ function Tado_RefreshZone(tado_homeid, tado_zoneid, tado_deviceid)
     Tado_Debug("Refreshing Zone state for homeid: " .. tado_homeid .. " and zoneid: " .. tado_zoneid)
 
     -- We use curl to send the HTTP request to get the JSON reply. We are authenticating via parameters as thats how the latest Tado app does it
-    local curlCommand = 'curl -k -L "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/zones/' .. tado_zoneid .. '/state?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
+    local curlCommand = 'curl -k -L -H "Content-Type: application/json" "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/zones/' .. tado_zoneid .. '/state?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
     local stdout = io.popen(curlCommand)
     local tado_zonestate = stdout:read("*a")
     stdout:close()
@@ -364,17 +362,22 @@ function Tado_RefreshZone(tado_homeid, tado_zoneid, tado_deviceid)
 
     luup.variable_set(AC_SID, "openWindow", obj.tadoMode or "", tado_deviceid)
     luup.variable_set(AC_SID, "linkstate", obj.link.state or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturecelsius", obj.sensorDataPoints.insideTemperature.celsius or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturefahrenheit", obj.sensorDataPoints.insideTemperature.fahrenheit or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturetimestamp", obj.sensorDataPoints.insideTemperature.timestamp or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturetype", obj.sensorDataPoints.insideTemperature.type or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointsinsideTemperatureprecisioncelsius", obj.sensorDataPoints.insideTemperature.precision.celsius or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointsinsideTemperatureprecisionfahrenheit", obj.sensorDataPoints.insideTemperature.fahrenheit or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointshumiditytype", obj.sensorDataPoints.humidity.type or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointshumiditypercentage", obj.sensorDataPoints.humidity.percentage or "", tado_deviceid)
-    luup.variable_set(AC_SID, "sensorDataPointshumiditytimestamp", obj.sensorDataPoints.humidity.timestamp or "", tado_deviceid)
+    if (obj.sensorDataPoints.insideTemperature) then
+        luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturecelsius", obj.sensorDataPoints.insideTemperature.celsius or "", tado_deviceid)
+        luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturefahrenheit", obj.sensorDataPoints.insideTemperature.fahrenheit or "", tado_deviceid)
+        luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturetimestamp", obj.sensorDataPoints.insideTemperature.timestamp or "", tado_deviceid)
+        luup.variable_set(AC_SID, "sensorDataPointsinsideTemperaturetype", obj.sensorDataPoints.insideTemperature.type or "", tado_deviceid)
+        luup.variable_set(AC_SID, "sensorDataPointsinsideTemperatureprecisioncelsius", obj.sensorDataPoints.insideTemperature.precision.celsius or "", tado_deviceid)
+        luup.variable_set(AC_SID, "sensorDataPointsinsideTemperatureprecisionfahrenheit", obj.sensorDataPoints.insideTemperature.fahrenheit or "", tado_deviceid)
+    end
+    
+    if (obj.sensorDataPoints.humidity) then
+        luup.variable_set(AC_SID, "sensorDataPointshumiditytype", obj.sensorDataPoints.humidity.type or "", tado_deviceid)
+        luup.variable_set(AC_SID, "sensorDataPointshumiditypercentage", obj.sensorDataPoints.humidity.percentage or "", tado_deviceid)
+        luup.variable_set(AC_SID, "sensorDataPointshumiditytimestamp", obj.sensorDataPoints.humidity.timestamp or "", tado_deviceid)
 
-    luup.variable_set(HUMIDITY_SID, "CurrentLevel", obj.sensorDataPoints.humidity.percentage or "", tado_deviceid)
+        luup.variable_set(HUMIDITY_SID, "CurrentLevel", obj.sensorDataPoints.humidity.percentage or "", tado_deviceid)
+    end
     
     -- Convert our data to upnp standards (HVAC Mode)
     local tado_oper_mode = "Unknown"
@@ -400,10 +403,12 @@ function Tado_RefreshZone(tado_homeid, tado_zoneid, tado_deviceid)
     luup.variable_set(HVAC_SID, "ModeStatus", tado_oper_mode or "", tado_deviceid)
 
     -- Lets update our CurrentTemperature based on what temperature unit our Vera is using
-    if (TADO_SCALE == "C") then
-        luup.variable_set(TEMPSENSOR_SID, "CurrentTemperature", obj.sensorDataPoints.insideTemperature.celsius or "", tado_deviceid)
-    elseif (TADO_SCALE == "F") then
-        luup.variable_set(TEMPSENSOR_SID, "CurrentTemperature", obj.sensorDataPoints.insideTemperature.fahrenheit or "", tado_deviceid)
+    if (obj.sensorDataPoints.insideTemperature) then
+        if (TADO_SCALE == "C") then
+            luup.variable_set(TEMPSENSOR_SID, "CurrentTemperature", obj.sensorDataPoints.insideTemperature.celsius or "", tado_deviceid)
+        elseif (TADO_SCALE == "F") then
+            luup.variable_set(TEMPSENSOR_SID, "CurrentTemperature", obj.sensorDataPoints.insideTemperature.fahrenheit or "", tado_deviceid)
+        end
     end
 
     -- Convert our data to upnp standards (Fan)
@@ -482,7 +487,7 @@ function Tado_CreateZones(tado_homeid)
     Tado_Debug("Getting Zones for homeid: " .. tado_homeid)
 
     -- We use curl to send the HTTP request to get the JSON reply. We are authenticating via parameters as thats how the latest Tado app does it
-    local curlCommand = 'curl -k -L "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/zones?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
+    local curlCommand = 'curl -k -L -H "Content-Type: application/json" "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/zones?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
     local stdout = io.popen(curlCommand)
     local tado_zones = stdout:read("*a")
     stdout:close()
@@ -504,13 +509,18 @@ function Tado_CreateZones(tado_homeid)
             tado_xml_file = "D_TadoAC1.xml"
         elseif (obj[i].type == "HEATING") then
             tado_xml_file = "D_TadoHeat1.xml"
+        elseif (obj[i].type == "HOT_WATER") then
+            tado_xml_file = "D_TadoWater1.xml"
+        else
+            tado_xml_file = "Unknown"
         end
 
-        -- Lets create that child with a altid of TadoZone<homeid>_<zoneid>. This will be used later to identify our children when we generate a list of them
-        luup.chdev.append(lul_device, child_devices, "TadoZone" .. tado_homeid .. "_" .. tostring(obj[i].id), obj[i].name, ZONETHERM_DEVICE, tado_xml_file, "", ",SID=" .. ZONETHERM_SID, false)
+        if (tado_xml_file ~= "Unknown") then
+            -- Lets create that child with a altid of TadoZone<homeid>_<zoneid>. This will be used later to identify our children when we generate a list of them
+            luup.chdev.append(lul_device, child_devices, "TadoZone" .. tado_homeid .. "_" .. tostring(obj[i].id), obj[i].name, ZONETHERM_DEVICE, tado_xml_file, "", ",SID=" .. ZONETHERM_SID, false)
 
-        Tado_Debug("Finished appending children for homeid: " .. tado_homeid)
-
+            Tado_Debug("Finished appending children for homeid: " .. tado_homeid)
+        end
     end
 end
 
@@ -522,7 +532,7 @@ function Tado_CreateChildren()
     Tado_Debug("Retrieving all homes on account")
     
     -- We use curl to send the HTTP request to get the JSON reply. We are authenticating via parameters as thats how the latest Tado app does it
-    local curlCommand = 'curl -k -L "https://my.tado.com/api/v2/me?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
+    local curlCommand = 'curl -k -L -H "Content-Type: application/json" "https://my.tado.com/api/v2/me?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
     local homes = ""
     local stdout = io.popen(curlCommand)
     local tado_home = stdout:read("*a")
@@ -612,74 +622,92 @@ function Tado_setOverlay(bool_status, lul_device)
         end
 
 
-        -- Now lets find out min and max values that are valid. If they dont exists (for smart thermostats) then use the hard coded values
-        local temp_min, temp_max
-        if (TADO_SCALE == "C" and ModeStatus == "CoolOn") then
-            temp_min = luup.variable_get(AC_SID, "TadoCoolMinCelsius", lul_device) or "5"
-            temp_max = luup.variable_get(AC_SID, "TadoCoolMaxCelsius", lul_device) or "25"
-        elseif (TADO_SCALE == "F" and ModeStatus == "CoolOn") then
-            temp_min = luup.variable_get(AC_SID, "TadoCoolMinFahrenheit", lul_device) or "41"
-            temp_max = luup.variable_get(AC_SID, "TadoCoolMaxFahrenheit", lul_device) or "77"
-        elseif (TADO_SCALE == "C" and ModeStatus == "HeatOn") then
-            temp_min = luup.variable_get(AC_SID, "TadoHeatMinCelsius", lul_device) or "5"
-            temp_max = luup.variable_get(AC_SID, "TadoHeatMaxCelsius", lul_device) or "25"
-        elseif (TADO_SCALE == "F" and ModeStatus == "HeatOn") then
-            temp_min = luup.variable_get(AC_SID, "TadoHeatMinFahrenheit", lul_device) or "41"
-            temp_max = luup.variable_get(AC_SID, "TadoHeatMaxFahrenheit", lul_device) or "77"
-        end
-
         
-        -- If the requested value is outside the valid range then set it to the closest valid value
-        local tado_temperature, tado_temperature_string
-        if ( TADO_SCALE == "C" and (ModeStatus == "HeatOn" or ModeStatus == "CoolOn") ) then
-            tado_temperature = luup.variable_get(AC_SID, "DefaultCelsius", lul_device)
-            if (tonumber(CurrentSetPoint)) then
-                if (tonumber(CurrentSetPoint) > tonumber(temp_max)) then
-                    tado_temperature = temp_max
-                elseif (tonumber(CurrentSetPoint) < tonumber(temp_min)) then
-                    tado_temperature = temp_min
-                else
-                    tado_temperature = CurrentSetPoint                                                                  
-                end
-            end
-            tado_temperature_string = '"celsius": ' .. (tonumber(tado_temperature) or TADO_DEFAULT_ON_CELSIUS)
-        elseif ( TADO_SCALE == "F" and (ModeStatus == "HeatOn" or ModeStatus == "CoolOn") ) then
-            tado_temperature = luup.variable_get(AC_SID, "DefaultFahrenheit", lul_device)
-            if (tonumber(CurrentSetPoint)) then
-                if (tonumber(CurrentSetPoint) > tonumber(temp_max)) then
-                    tado_temperature = temp_max
-                elseif (tonumber(CurrentSetPoint) < tonumber(temp_min)) then
-                    tado_temperature = temp_min
-                else
-                    tado_temperature = CurrentSetPoint                                                                  
-                end
-            end
-            tado_temperature_string = '"fahrenheit": ' .. (tonumber(tado_temperature) or TADO_DEFAULT_ON_FAHRENHEIT)
-        end
-        
+    
         -- Lets start constructing part of our HTTP PUT request data that we will send
         if (ModeStatus == "Off") then
             -- Off is the same for AC's and Heating
             json_output_part1 = ',"power":"OFF"}'
-        elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING" and ModeStatus == "AutoChangeOver") then
-            -- Auto mode does for some reason not take a temperature. Not sure what it actually does
-            json_output_part1 = ',"power":"ON","mode":"AUTO"}'
-        elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING" and ModeStatus == "Dry") then
-            -- Auto mode does for some reason not take a temperature. Not sure what it actually does
-            json_output_part1 = ',"power":"ON","mode":"DRY"}'
-        elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING" and ModeStatus == "CoolOn") then
-            -- Cool mode only exists on the ACs
-            json_output_part1 = ',"power":"ON","mode":"COOL","temperature":{' .. tado_temperature_string .. '},"fanSpeed":"' .. tado_fan_mode .. '"}'
-        elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING" and ModeStatus == "HeatOn") then
-            -- Heating exists on both ACs and Heating, but uses a different formatting for each type
-            json_output_part1 = ',"power":"ON","mode":"HEAT","temperature":{' .. tado_temperature_string .. '},"fanSpeed":"' .. tado_fan_mode .. '"}'
-        elseif (luup.variable_get(AC_SID, "settingtype", lul_device) == "HEATING" and ModeStatus == "HeatOn") then
-            -- Slight difference here for the Heating systems
-            json_output_part1 = ',"power":"ON","temperature":{' .. tado_temperature_string .. '}}'
         else
-            Tado_Debug("Invalid setting combination. Ignoring request")
-            return 1
+            json_output_part1 = ',"power":"ON"'
         end
+    
+        local IsAdjustable = "No"
+    
+        if (ModeStatus == "Dry") then
+            json_output_part1 = json_output_part1 .. ',"mode":"DRY"'
+        elseif (ModeStatus == "CoolOn") then
+            json_output_part1 = json_output_part1 .. ',"mode":"COOL","fanSpeed":"' .. tado_fan_mode .. '"'
+            IsAdjustable = luup.variable_get(AC_SID, "TadoCoolAdjustable", lul_device)
+        elseif (ModeStatus == "HeatOn") then
+            if (luup.variable_get(AC_SID, "settingtype", lul_device) == "AIR_CONDITIONING") then
+                json_output_part1 = json_output_part1 .. ',"mode":"HEAT","fanSpeed":"' .. tado_fan_mode .. '"'
+            end
+            IsAdjustable = luup.variable_get(AC_SID, "TadoHeatAdjustable", lul_device)
+        elseif (ModeStatus == "AutoChangeOver") then
+            json_output_part1 = json_output_part1 .. ',"mode":"AUTO"'
+            IsAdjustable = luup.variable_get(AC_SID, "TadoAutoAdjustable", lul_device)
+        end
+
+        
+        
+        -- Are we doing a change that allows us to send a new temperature value?
+        if (IsAdjustable == "Yes") then
+            -- Now lets find out min and max values that are valid. If they dont exists (for smart thermostats) then use the hard coded values
+            local temp_min, temp_max
+            if (TADO_SCALE == "C" and ModeStatus == "CoolOn") then
+                temp_min = luup.variable_get(AC_SID, "TadoCoolMinCelsius", lul_device) or "5"
+                temp_max = luup.variable_get(AC_SID, "TadoCoolMaxCelsius", lul_device) or "25"
+            elseif (TADO_SCALE == "F" and ModeStatus == "CoolOn") then
+                temp_min = luup.variable_get(AC_SID, "TadoCoolMinFahrenheit", lul_device) or "41"
+                temp_max = luup.variable_get(AC_SID, "TadoCoolMaxFahrenheit", lul_device) or "77"
+            elseif (TADO_SCALE == "C" and ModeStatus == "HeatOn") then
+                temp_min = luup.variable_get(AC_SID, "TadoHeatMinCelsius", lul_device) or "5"
+                temp_max = luup.variable_get(AC_SID, "TadoHeatMaxCelsius", lul_device) or "25"
+            elseif (TADO_SCALE == "F" and ModeStatus == "HeatOn") then
+                temp_min = luup.variable_get(AC_SID, "TadoHeatMinFahrenheit", lul_device) or "41"
+                temp_max = luup.variable_get(AC_SID, "TadoHeatMaxFahrenheit", lul_device) or "77"
+            elseif (TADO_SCALE == "C" and ModeStatus == "AutoChangeOver") then
+                temp_min = luup.variable_get(AC_SID, "TadoAutoMinCelsius", lul_device) or "5"
+                temp_max = luup.variable_get(AC_SID, "TadoAutoMaxCelsius", lul_device) or "25"
+            elseif (TADO_SCALE == "F" and ModeStatus == "AutoChangeOver") then
+                temp_min = luup.variable_get(AC_SID, "TadoAutoMinFahrenheit", lul_device) or "41"
+                temp_max = luup.variable_get(AC_SID, "TadoAutoMaxFahrenheit", lul_device) or "77"
+            end
+
+
+            -- If the requested value is outside the valid range then set it to the closest valid value
+            local tado_temperature, tado_temperature_string
+            if ( TADO_SCALE == "C" ) then
+                tado_temperature = luup.variable_get(AC_SID, "DefaultCelsius", lul_device)
+                if (tonumber(CurrentSetPoint)) then
+                    if (tonumber(CurrentSetPoint) > tonumber(temp_max)) then
+                        tado_temperature = temp_max
+                    elseif (tonumber(CurrentSetPoint) < tonumber(temp_min)) then
+                        tado_temperature = temp_min
+                    else
+                        tado_temperature = CurrentSetPoint                                                                  
+                    end
+                end
+                tado_temperature_string = '"celsius": ' .. (tonumber(tado_temperature) or TADO_DEFAULT_ON_CELSIUS)
+            elseif ( TADO_SCALE == "F" ) then
+                tado_temperature = luup.variable_get(AC_SID, "DefaultFahrenheit", lul_device)
+                if (tonumber(CurrentSetPoint)) then
+                    if (tonumber(CurrentSetPoint) > tonumber(temp_max)) then
+                        tado_temperature = temp_max
+                    elseif (tonumber(CurrentSetPoint) < tonumber(temp_min)) then
+                        tado_temperature = temp_min
+                    else
+                        tado_temperature = CurrentSetPoint                                                                  
+                    end
+                end
+                tado_temperature_string = '"fahrenheit": ' .. (tonumber(tado_temperature) or TADO_DEFAULT_ON_FAHRENHEIT)
+            end
+            json_output_part1 = json_output_part1 .. ',"temperature":{' .. tado_temperature_string .. '}'
+        end
+        -- Could add this in somewhere else but cleaner to put it on its own line
+        json_output_part1 = json_output_part1 .. '}'
+        
         
         -- Lets create our Termination part.
         if (luup.variable_get(AC_SID, "DefaultExpiration", lul_device) == "TADO_MODE") then
@@ -696,7 +724,7 @@ function Tado_setOverlay(bool_status, lul_device)
         json_output = '{"type":"MANUAL","setting":{"type":"' .. luup.variable_get(AC_SID, "settingtype", lul_device) .. '"' .. json_output_part1 .. json_output_part2 .. "}"
         
         -- Now lets construct our curl command we will use
-        curlCommand = 'curl -k -L -X PUT "https://my.tado.com/api/v2/homes/' .. luup.variable_get(AC_SID, "TadoHomeID", lul_device) .. '/zones/' .. luup.variable_get(AC_SID, "TadoZoneID", lul_device) .. '/overlay?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '" --data-binary \'' .. json_output .. '\''
+        curlCommand = 'curl -k -L -H "Content-Type: application/json" -X PUT "https://my.tado.com/api/v2/homes/' .. luup.variable_get(AC_SID, "TadoHomeID", lul_device) .. '/zones/' .. luup.variable_get(AC_SID, "TadoZoneID", lul_device) .. '/overlay?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '" --data-binary \'' .. json_output .. '\''
 
         -- Finally lets change our EnergyModeStatus to show that we are in "Normal" mode which we use to show that Overlay/Manual mode is activated rather than Energy mode (Smart Schedule)
         luup.variable_set(HVAC_SID, "EnergyModeStatus", "Normal", lul_device)
@@ -705,7 +733,7 @@ function Tado_setOverlay(bool_status, lul_device)
     -- If the first parameter is 0, then that means we want to disable the Overlay/Manual mode and re-activate the Tado Smart Schedule
     elseif (bool_status == 0) then
         -- Which means we'll want a HTTP DELETE request instead
-        curlCommand = 'curl -k -L -X DELETE "https://my.tado.com/api/v2/homes/' .. luup.variable_get(AC_SID, "TadoHomeID", lul_device) .. '/zones/' .. luup.variable_get(AC_SID, "TadoZoneID", lul_device) .. '/overlay?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
+        curlCommand = 'curl -k -L -H "Content-Type: application/json" -X DELETE "https://my.tado.com/api/v2/homes/' .. luup.variable_get(AC_SID, "TadoHomeID", lul_device) .. '/zones/' .. luup.variable_get(AC_SID, "TadoZoneID", lul_device) .. '/overlay?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
 
         -- And finally lets set our EnergyModeStatus to EnergySavingMode to show that we are saving energy by using Tados Smart Schedule
         luup.variable_set(HVAC_SID, "EnergyModeStatus", "EnergySavingsMode", lul_device)
@@ -720,6 +748,9 @@ function Tado_setOverlay(bool_status, lul_device)
 
     local obj, pos, err = tado_json.decode (curl_output, 1, nil)
 
+    -- Check for errors first (log only)
+    Tado_ErrorCheck(obj, err)
+    
     -- Lets refresh our Zone to get the latest state after we changed it.
     Tado_RefreshZone(luup.variable_get(AC_SID, "TadoHomeID", lul_device), luup.variable_get(AC_SID, "TadoZoneID", lul_device), lul_device)
 end
@@ -805,13 +836,13 @@ end
 function Tado_GetTempScale()
     -- Function to get the Vera temperature unit used.
     
-    local curlCommand = 'curl -k -L "http://localhost:3480/data_request?id=lu_sdata"'
+    local curlCommand = 'curl -k -L -H "Content-Type: application/json" "http://localhost:3480/data_request?id=lu_sdata"'
     local stdout = io.popen(curlCommand)
     local tado_controller = stdout:read("*a")
     stdout:close()
 
     local obj, pos, err = tado_json.decode (tado_controller, 1, nil)
-
+    
     TADO_SCALE = obj.temperature
 end
 
@@ -823,122 +854,63 @@ function Tado_GetZoneCapabilities(tado_homeid, tado_zoneid, tado_deviceid)
     Tado_Debug("Refreshing Zone control for homeid: " .. tado_homeid .. " and zoneid: " .. tado_zoneid)
 
     -- We use curl to send the HTTP request to get the JSON reply. We are authenticating via parameters as thats how the latest Tado app does it
-    local curlCommand = 'curl -k -L "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/zones/' .. tado_zoneid .. '/control?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
+    local curlCommand = 'curl -k -L -H "Content-Type: application/json" "https://my.tado.com/api/v2/homes/' .. tado_homeid .. '/zones/' .. tado_zoneid .. '/capabilities?username=' .. data.username .. '&password=' .. url.escape(data.password) .. '"'
     local stdout = io.popen(curlCommand)
-    local tado_zonecontrol = stdout:read("*a")
+    local tado_zonecapabilities = stdout:read("*a")
     stdout:close()
 
     -- Lets use dkjson to decode the JSON response
-    local obj, pos, err = tado_json.decode (tado_zonecontrol, 1, nil)
+    local obj, pos, err = tado_json.decode (tado_zonecapabilities, 1, nil)
 
-    -- Check for errors first
+   -- Check for errors first
     if (Tado_ErrorCheck(obj, err) == 2) then
+        -- There was a error, so lets stop the function
         return 2
+    end   
+    
+    -- This will be for Thermostats and Radiators etc
+    if (obj.temperatures) then
+        luup.variable_set(AC_SID, "TadoHeatMinCelsius", obj.temperatures.celsius.min or "5", tado_deviceid)
+        luup.variable_set(AC_SID, "TadoHeatMaxCelsius", obj.temperatures.celsius.max or "25", tado_deviceid)
+        luup.variable_set(AC_SID, "TadoHeatMinFahrenheit", obj.temperatures.fahrenheit.min or "41", tado_deviceid)
+        luup.variable_set(AC_SID, "TadoHeatMaxFahrenheit", obj.temperatures.fahrenheit.max or "77", tado_deviceid)
+        luup.variable_set(AC_SID, "TadoHeatAdjustable", "Yes", tado_deviceid)
+    else
+        luup.variable_set(AC_SID, "TadoHeatAdjustable", "No", tado_deviceid)
     end
-
-    -- Data below varies massively between a AC Controller and a Thermostat. So we need to verify that the data exists before we call it and if it does exist, save it as a variable to the child
-    if (obj.userAcCapabilities) then
-        -- These are the ones we care about for the AC Controllers that have a Min and Max temperature setting that can be supplied
-        if (obj.userAcCapabilities.COOL) then
-            luup.variable_set(AC_SID, "TadoCoolMinCelsius", obj.userAcCapabilities.COOL.temperatures.min.celsius or "", tado_deviceid)
-            luup.variable_set(AC_SID, "TadoCoolMaxCelsius", obj.userAcCapabilities.COOL.temperatures.max.celsius or "", tado_deviceid)
-
-            luup.variable_set(AC_SID, "TadoCoolMinCFahrenheit", obj.userAcCapabilities.COOL.temperatures.min.fahrenheit or "", tado_deviceid)
-            luup.variable_set(AC_SID, "TadoCoolMaxFahrenheit", obj.userAcCapabilities.COOL.temperatures.max.fahrenheit or "", tado_deviceid)
-
-            luup.variable_set(AC_SID, "userAcCapabilitiesCOOLfanSpeeds", obj.userAcCapabilities.COOL.fanSpeeds or "", tado_deviceid)
-        end
-        if (obj.userAcCapabilities.HEAT) then
-            luup.variable_set(AC_SID, "TadoHeatMinCelsius", obj.userAcCapabilities.HEAT.temperatures.min.celsius or "", tado_deviceid)
-            luup.variable_set(AC_SID, "TadoHeatMaxCelsius", obj.userAcCapabilities.HEAT.temperatures.max.celsius or "", tado_deviceid)
-
-            luup.variable_set(AC_SID, "TadoHeatMinFahrenheit", obj.userAcCapabilities.HEAT.temperatures.min.fahrenheit or "", tado_deviceid)
-            luup.variable_set(AC_SID, "TadoHeatMaxFahrenheit", obj.userAcCapabilities.HEAT.temperatures.max.fahrenheit or "", tado_deviceid)
-
-            luup.variable_set(AC_SID, "userAcCapabilitiesHEATfanSpeeds", obj.userAcCapabilities.HEAT.fanSpeeds or "", tado_deviceid)
-        end
-    end
-
-    -- The rest below is really more for future use
-    luup.variable_set(AC_SID, "type", obj.type or "", tado_deviceid)
-    luup.variable_set(AC_SID, "earlyStartEnabled", obj.earlyStartEnabled or "", tado_deviceid)
-    luup.variable_set(AC_SID, "heatingCircuit", obj.heatingCircuit or "", tado_deviceid)
-    if (obj.wirelessRemote) then
-        luup.variable_set(AC_SID, "wirelessRemotedeviceType", obj.wirelessRemote.deviceType or "", tado_deviceid)
-        luup.variable_set(AC_SID, "wirelessRemoteserialNo", obj.wirelessRemote.serialNo or "", tado_deviceid)
-        luup.variable_set(AC_SID, "wirelessRemoteshortSerialNo", obj.wirelessRemote.shortSerialNo or "", tado_deviceid)
-        luup.variable_set(AC_SID, "wirelessRemotecurrentFwVersion", obj.wirelessRemote.currentFwVersion or "", tado_deviceid)
-        if (obj.wirelessRemote.connectionState) then
-            luup.variable_set(AC_SID, "wirelessRemoteconnectionStatevalue", obj.wirelessRemote.connectionState.value or "", tado_deviceid)
-            luup.variable_set(AC_SID, "wirelessRemoteconnectionStatetimestamp", obj.wirelessRemote.connectionState.timestamp or "", tado_deviceid)
-        end
-        if (obj.wirelessRemote.characteristics) then
-            luup.variable_set(AC_SID, "wirelessRemotecharacteristicscapabilities", obj.wirelessRemote.characteristics.capabilities or "", tado_deviceid)
-        end
-        if (obj.wirelessRemote.accessPointWiFi) then
-            luup.variable_set(AC_SID, "wirelessRemoteaccessPointWiFi", obj.wirelessRemote.accessPointWiFi.ssid or "", tado_deviceid)
-        end
-        luup.variable_set(AC_SID, "wirelessRemotecommandTableUploadState", obj.wirelessRemote.commandTableUploadState or "", tado_deviceid)
-    end
-
-    if (obj.commandConfiguration) then
-        if (obj.commandConfiguration.acCommandSet) then
-            luup.variable_set(AC_SID, "commandConfigurationacCommandSetcommandType", obj.commandConfiguration.acCommandSet.commandType or "", tado_deviceid)
-            luup.variable_set(AC_SID, "commandConfigurationacCommandSetcode", obj.commandConfiguration.acCommandSet.code or "", tado_deviceid)
-            luup.variable_set(AC_SID, "commandConfigurationacCommandSetname", obj.commandConfiguration.acCommandSet.name or "", tado_deviceid)
-            luup.variable_set(AC_SID, "commandConfigurationacCommandSetorigin", obj.commandConfiguration.acCommandSet.origin or "", tado_deviceid)
-            luup.variable_set(AC_SID, "commandConfigurationacCommandSettemperatureUnit", obj.commandConfiguration.acCommandSet.temperatureUnit or "", tado_deviceid)
-            luup.variable_set(AC_SID, "commandConfigurationacCommandSetsupportedModes", obj.commandConfiguration.acCommandSet.supportedModes or "", tado_deviceid)
-        end
-        luup.variable_set(AC_SID, "commandConfigurationdedicatedOnCommand", obj.commandConfiguration.dedicatedOnCommand or "", tado_deviceid)
-    end
-
-    if (obj.driver) then
-        luup.variable_set(AC_SID, "driverdiscriminator", obj.driver.discriminator or "", tado_deviceid)
-        luup.variable_set(AC_SID, "drivertype", obj.driver.type or "", tado_deviceid)
-        luup.variable_set(AC_SID, "drivermodes", obj.driver.modes or "", tado_deviceid)
-        if (obj.driver.acCommandSet) then
-            luup.variable_set(AC_SID, "driveracCommandSetcommandType", obj.driver.acCommandSet.commandType or "", tado_deviceid)
-            luup.variable_set(AC_SID, "driveracCommandSetcode", obj.driver.acCommandSet.code or "", tado_deviceid)
-            luup.variable_set(AC_SID, "driveracCommandSetname", obj.driver.acCommandSet.name or "", tado_deviceid)
-            luup.variable_set(AC_SID, "driveracCommandSetorigin", obj.driver.acCommandSet.origin or "", tado_deviceid)
-            luup.variable_set(AC_SID, "driveracCommandSettemperatureUnit", obj.driver.acCommandSet.temperatureUnit or "", tado_deviceid)
-            luup.variable_set(AC_SID, "driveracCommandSetsupportedModes", obj.driver.acCommandSet.supportedModes or "", tado_deviceid)
+    
+    -- This will be for AC units (this has to stay after the Thermostat/radiator valves as it overrights the previous "No" value set)
+    if (obj.COOL) then
+        if (obj.COOL.temperatures) then
+            luup.variable_set(AC_SID, "TadoCoolMinCelsius", obj.COOL.temperatures.celsius.min or "5", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoCoolMaxCelsius", obj.COOL.temperatures.celsius.max or "25", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoCoolMinFahrenheit", obj.COOL.temperatures.fahrenheit.min or "41", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoCoolMaxFahrenheit", obj.COOL.temperatures.fahrenheit.max or "77", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoCoolAdjustable", "Yes", tado_deviceid)
+        else
+            luup.variable_set(AC_SID, "TadoCoolAdjustable", "No", tado_deviceid)
         end
     end
-
-    luup.variable_set(AC_SID, "dedicatedOnCommand", obj.dedicatedOnCommand or "", tado_deviceid)
-
-    if (obj.acSpecs) then
-        luup.variable_set(AC_SID, "acSpecsacUnitDisplaysSetPointTemperature", obj.acSpecs.acUnitDisplaysSetPointTemperature or "", tado_deviceid)
-        if (obj.acSpecs.remoteControl) then
-            luup.variable_set(AC_SID, "acSpecsremoteControlcommandType", obj.acSpecs.remoteControl.commandType or "", tado_deviceid)
-            luup.variable_set(AC_SID, "acSpecsremoteControltemperatureUnit", obj.acSpecs.remoteControl.temperatureUnit or "", tado_deviceid)
-        end
-        if (obj.acSpecs.manufacturer) then
-            luup.variable_set(AC_SID, "acSpecsmanufacturerid", obj.acSpecs.manufacturer.id or "", tado_deviceid)
-            luup.variable_set(AC_SID, "acSpecsmanufacturername", obj.acSpecs.manufacturer.name or "", tado_deviceid)
+    if (obj.HEAT) then
+        if (obj.HEAT.temperatures) then
+            luup.variable_set(AC_SID, "TadoHeatMinCelsius", obj.HEAT.temperatures.celsius.min or "5", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoHeatMaxCelsius", obj.HEAT.temperatures.celsius.max or "25", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoHeatMinFahrenheit", obj.HEAT.temperatures.fahrenheit.min or "41", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoHeatMaxFahrenheit", obj.HEAT.temperatures.fahrenheit.max or "77", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoHeatAdjustable", "Yes", tado_deviceid)
+        else
+            luup.variable_set(AC_SID, "TadoHeatAdjustable", "No", tado_deviceid)
         end
     end
-
-    if (obj.duties) then
-        luup.variable_set(AC_SID, "dutiestype", obj.duties.type or "", tado_deviceid)
-        if (obj.duties.wirelessRemote) then
-            luup.variable_set(AC_SID, "dutieswirelessRemotedeviceType", obj.duties.wirelessRemote.deviceType or "", tado_deviceid)
-            luup.variable_set(AC_SID, "dutieswirelessRemoteserialNo", obj.duties.wirelessRemote.serialNo or "", tado_deviceid)
-            luup.variable_set(AC_SID, "dutieswirelessRemoteshortSerialNo", obj.duties.wirelessRemote.shortSerialNo or "", tado_deviceid)
-            luup.variable_set(AC_SID, "dutieswirelessRemotecurrentFwVersion", obj.duties.wirelessRemote.currentFwVersion or "", tado_deviceid)
-            if (obj.duties.wirelessRemote.connectionState) then
-                luup.variable_set(AC_SID, "dutieswirelessRemoteconnectionStatevalue", obj.duties.wirelessRemote.connectionState.value or "", tado_deviceid)
-                luup.variable_set(AC_SID, "dutieswirelessRemoteconnectionStatetimestamp", obj.duties.wirelessRemote.connectionState.timestamp or "", tado_deviceid)
-            end
-            if (obj.duties.wirelessRemote.characteristics) then
-                luup.variable_set(AC_SID, "dutieswirelessRemotecharacteristicscapabilities", obj.duties.wirelessRemote.characteristics.capabilities or "", tado_deviceid)
-            end
-            if (obj.duties.wirelessRemote.accessPointWiFi) then
-                luup.variable_set(AC_SID, "dutieswirelessRemoteaccessPointWiFi", obj.duties.wirelessRemote.accessPointWiFi.ssid or "", tado_deviceid)
-            end
-            luup.variable_set(AC_SID, "dutieswirelessRemotecommandTableUploadState", obj.duties.wirelessRemote.commandTableUploadState or "", tado_deviceid)
+    if (obj.AUTO) then
+        if (obj.AUTO.temperatures) then
+            luup.variable_set(AC_SID, "TadoAutoMinCelsius", obj.AUTO.temperatures.celsius.min or "5", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoAutoMaxCelsius", obj.AUTO.temperatures.celsius.max or "25", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoAutoMinFahrenheit", obj.AUTO.temperatures.fahrenheit.min or "41", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoAutoMaxFahrenheit", obj.AUTO.temperatures.fahrenheit.max or "77", tado_deviceid)
+            luup.variable_set(AC_SID, "TadoAutoAdjustable", "Yes", tado_deviceid)
+        else
+            luup.variable_set(AC_SID, "TadoAutoAdjustable", "No", tado_deviceid)
         end
     end
 end

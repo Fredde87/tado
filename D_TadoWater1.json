@@ -177,9 +177,9 @@
 					"Display": {
 						"Service": "urn:upnp-org:serviceId:TemperatureSetpoint1_Heat",
 						"Variable": "CurrentSetpoint",
-						"MinValue": "16",
-						"MaxValue": "31",
-						"Step": "0.5",
+						"MinValue": "30",
+						"MaxValue": "65",
+						"Step": "1",
 						"Editable": "1",
 						"InvalidInputMessage": {
 							"lang_tag": "enter_a_valid_number",
@@ -417,6 +417,19 @@
                     }
                 },
                 {
+                    "ControlType": "label",
+                    "Label": {
+                        "lang_tag": "device_settings_page",
+                        "text": "Expiration (MANUAL, TADO_MODE or TIMER)"
+                    },
+                    "Display": {
+                        "Top": 164,
+                        "Left": 50,
+                        "Width": 120,
+                        "Height": 20
+                    }
+                },
+                {
                     "ControlType": "variable",
                     "Display": {
                         "Service": "urn:fr87-com:serviceId:TadoAC1",
@@ -610,22 +623,6 @@
 			}
 		},
 		"group_4": {
-			"cmd_1": {
-				"label": "Set Fan On",
-				"serviceId": "urn:upnp-org:serviceId:HVAC_FanOperatingMode1",
-				"action": "SetMode",
-				"arguments": {
-					"NewMode": "ContinuousOn"
-				}
-			},
-			"cmd_2": {
-				"label": "Set Fan Auto",
-				"serviceId": "urn:upnp-org:serviceId:HVAC_FanOperatingMode1",
-				"action": "SetMode",
-				"arguments": {
-					"NewMode": "Auto"
-				}
-			}
 		},
 		"group_5": {
 			"cmd_1": {
@@ -686,37 +683,6 @@
 			]
 		},
 		{
-			"id": 2,
-			"label": {
-				"lang_tag": "ui7_ambient_temperature_goes_above",
-				"text": "Ambient temperature goes above"
-			},
-			"serviceId": "urn:upnp-org:serviceId:TemperatureSensor1",
-			"norepeat": "1",
-			"argumentList": [
-				{
-					"id": 1,
-					"dataType": "i4",
-					"name": "CurrentTemperature",
-					"comparisson": ">",
-					"prefix": {
-						"lang_tag": "ui7_temperature",
-						"text": "temperature"
-					},
-					"suffix": {
-						"lang_tag": "ui7_degrees",
-						"text": "degrees"
-					},
-					"minValue": "-35",
-					"maxValue": "95",
-					"HumanFriendlyText": {
-						"lang_tag": "ui7_hft_ambient_temperature_goes_above",
-						"text": "_DEVICE_NAME_ ambient temperature goes above _ARGUMENT_VALUE_ degrees"
-					}
-				}
-			]
-		},
-		{
 			"id": 5,
 			"label": {
 				"lang_tag": "ui7_thermostat_heat_point_goes_over",
@@ -738,42 +704,11 @@
 						"lang_tag": "ui7_degrees",
 						"text": "degrees"
 					},
-					"minValue": "-35",
-					"maxValue": "95",
+					"minValue": "85",
+					"maxValue": "150",
 					"HumanFriendlyText": {
 						"lang_tag": "ui7_hft_thermostat_heatpoint_goes_over",
 						"text": "_DEVICE_NAME_ heat setpoint goes over _ARGUMENT_VALUE_ degrees"
-					}
-				}
-			]
-		},
-		{
-			"id": 7,
-			"label": {
-				"lang_tag": "ui7_ambient_temperature_goes_below",
-				"text": "Ambient temperature goes below"
-			},
-			"serviceId": "urn:upnp-org:serviceId:TemperatureSensor1",
-			"norepeat": "1",
-			"argumentList": [
-				{
-					"id": 1,
-					"dataType": "i4",
-					"name": "CurrentTemperature",
-					"comparisson": "<",
-					"prefix": {
-						"lang_tag": "ui7_temperature",
-						"text": "temperature"
-					},
-					"suffix": {
-						"lang_tag": "ui7_degrees",
-						"text": "degrees"
-					},
-					"minValue": "-35",
-					"maxValue": "95",
-					"HumanFriendlyText": {
-						"lang_tag": "ui7_hft_ambient_temperature_goes_below",
-						"text": "_DEVICE_NAME_ ambient temperature goes below _ARGUMENT_VALUE_ degrees"
 					}
 				}
 			]
